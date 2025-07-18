@@ -1,3 +1,5 @@
+import 'package:agnonymous_app/features/posts/widgets/trending_post_card.dart';
+import 'package:agnonymous_app/features/posts/widgets/trending_topic_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,18 +25,9 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
-            child: const Text(
-              'Secure Platform for Anonymous Agricultural Transparency',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
+          
+          const TrendingTopicCard(),
+          const TrendingPostCard(),
           const Expanded(
             child: PostList(),
           ),
