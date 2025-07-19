@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/models/post_model.dart';
+import '../../voting/presentation/truth_meter_widget.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends ConsumerWidget {
   final Post post;
 
   const PostCard({super.key, required this.post});
@@ -38,6 +40,8 @@ class PostCard extends StatelessWidget {
                 fontSize: 12.0,
               ),
             ),
+            const SizedBox(height: 16),
+            TruthMeterWidget(postId: post.id),
           ],
         ),
       ),

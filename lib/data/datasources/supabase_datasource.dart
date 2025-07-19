@@ -66,4 +66,31 @@ class SupabaseDatasource {
       throw AppException('An unexpected error occurred while deleting data', details: e.toString());
     }
   }
+
+  /// Inserts or updates data in a specified table.
+  Future<Map<String, dynamic>> upsertData(String tableName, Map<String, dynamic> data, Map<String, dynamic> onConflict) async {
+    try {
+      final List<Map<String, dynamic>> response = await _supabaseClient.from(tableName).upsert(data as Map<String, Object>).onConflict(onConflict.keys.join(',')).select();
+      if (response.isEmpty) {
+        throw AppException('Upsert operation returned no data');
+      }
+      return response.first;
+    } on PostgrestException catch (e) {
+      throw NetworkException('Failed to upsert data into $tableName', details: e.message);
+    } catch (e) {
+      throw AppException('An unexpected error occurred while upserting data', details: e.toString());
+    }
+  }
+
+  /// Calls a Supabase RPC function.
+  Future<dynamic> callRpc(String functionName, Map<String, dynamic> params) async {
+    try {
+      final response = await _supabaseClient.rpc(functionName, params: params);
+      return response;
+    } on PostgrestException catch (e) {
+      throw NetworkException('Failed to call RPC function $functionName', details: e.message);
+    } catch (e) {
+      throw AppException('An unexpected error occurred while calling RPC function', details: e.toString());
+    }
+  }
 }
