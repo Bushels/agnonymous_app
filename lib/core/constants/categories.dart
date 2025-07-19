@@ -85,9 +85,20 @@ class AgriculturalCategories {
     );
   }
 
-  static AgriculturalCategory getTrendingCategory() {
-    // For now, return crops as the trending category
-    // In a real app, this would be determined by post counts or other metrics
-    return getCategoryById('crops');
+  static AgriculturalCategory getTrendingCategory(List<dynamic> posts) {
+    if (posts.isEmpty) {
+      return getCategoryById('general');
+    }
+
+    final categoryCounts = <String, int>{};
+    for (final post in posts) {
+      final category = post['category'] as String;
+      categoryCounts[category] = (categoryCounts[category] ?? 0) + 1;
+    }
+
+    final sortedCategories = categoryCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return getCategoryById(sortedCategories.first.key);
   }
 }

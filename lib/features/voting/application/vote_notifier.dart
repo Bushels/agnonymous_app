@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:agnonymous_app/features/voting/domain/post_vote_state.dart';
+import 'package:agnonymous_app/features/posts/providers/posts_notifier.dart';
+import 'package:agnonymous_app/data/repositories/post_repository.dart';
 
 // In a real app, you would have a provider for your Supabase client
 final supabaseClientProvider = Provider((ref) => Supabase.instance.client);
@@ -112,6 +114,9 @@ class VoteNotifier extends FamilyNotifier<PostVoteState, String> {
           'vote_type_in': newCurrentUserVote?.name, // Pass null to remove vote
         },
       );
+      // After a successful vote, refetch the post to update the vote counts
+      final updatedPost = await ref.read(postRepositoryProvider).getPostById(postId);
+      ref.read(postsNotifierProvider.notifier).updatePost(updatedPost);
     } catch (e) {
       // 3. REVERT ON FAILURE
       state = originalState;

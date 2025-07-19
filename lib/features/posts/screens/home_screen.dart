@@ -1,5 +1,4 @@
-import 'package:agnonymous_app/features/posts/widgets/trending_post_card.dart';
-import 'package:agnonymous_app/features/posts/widgets/trending_topic_card.dart';
+import 'package:agnonymous_app/features/post/widgets/trending_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -25,9 +24,7 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          
-          const TrendingTopicCard(),
-          const TrendingPostCard(),
+          const TrendingBox(),
           const Expanded(
             child: PostList(),
           ),
